@@ -18,3 +18,12 @@ class Config(object):
     
     def get_command_aliases_for(self, command_name: str):
         return str(self._config["command_aliases"][command_name]).split(",")
+    
+    def get_bot_embed_color(self):
+        return int(self._config["general_settings"]["bot_embed_color"], 16)
+    
+    def get_commands_with_description(self):
+        return self._config._sections["command_descriptions"]
+    
+    def get_switch_server_cooldown(self):
+        return self._config["general_settings"]["switch_server_cooldown"]
