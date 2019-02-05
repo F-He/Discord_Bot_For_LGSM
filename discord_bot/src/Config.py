@@ -1,4 +1,5 @@
 import configparser
+from src.Utils import convert_str_to_hex
 
 
 class Config(object):
@@ -20,7 +21,7 @@ class Config(object):
         return str(self._config["command_aliases"][command_name]).split(",")
     
     def get_bot_embed_color(self):
-        return int(self._config["general_settings"]["bot_embed_color"], 16)
+        return convert_str_to_hex(self._config["general_settings"]["bot_embed_color"])
     
     def get_commands_with_description(self):
         return self._config._sections["command_descriptions"]

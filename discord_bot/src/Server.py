@@ -19,6 +19,9 @@ class ServerManager():
             return True
         else:
             return False
+    
+    async def stopAll(self):
+        pass
 
 if __name__ == "__main__":
     servermanager = ServerManager()

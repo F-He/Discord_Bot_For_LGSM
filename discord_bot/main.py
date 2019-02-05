@@ -27,8 +27,7 @@ async def help(ctx):
 @commands.cooldown(1, config.get_switch_server_cooldown(), commands.BucketType.default)
 async def switch(ctx, serverName):
     msg1 = await ctx.send("Checking if another server is running and if so shutting it down.")
-    # server.
-    # Check and stop servers
+    await server.stopAll()
     msg2 = await ctx.send(f"Starting {serverName} server.")
     await server.start(serverName)
     await asyncio.sleep(2)
