@@ -38,4 +38,18 @@ async def switch(ctx, serverName):
     # Start server
 
 
+@bot.command(aliases=config.get_command_aliases_for("start"))
+@commands.guild_only()
+@commands.cooldown(1, config.get_start_server_cooldown(), commands.BucketType.default)
+async def start(ctx):
+    pass
+
+
+@bot.command(aliases=config.get_command_aliases_for("stop"))
+@commands.guild_only()
+@commands.cooldown(1, config.get_stop_server_cooldown(), commands.BucketType.default)
+async def stop(ctx):
+    pass
+
+
 bot.run(config.get_token())
