@@ -6,50 +6,71 @@ from src.Server import ServerManager
 import asyncio
 
 config = Config(__file__[:-7] + "config.ini")
-bot = commands.Bot(command_prefix=config.get_command_prefix())
+bot = commands.Bot(command_prefix=config.getCommandPrefix())
 bot.remove_command("help")
 embeds = Embeds(config)
-server = ServerManager()
+server = ServerManager(config)
+
 
 @bot.event
 async def on_ready():
     print("Online")
-    await bot.change_presence(activity=discord.Game(name=config.get_bot_status()))
+    await bot.change_presence(activity=discord.Game(name=config.getBotStatus()))
 
 
-@bot.command(aliases=config.get_command_aliases_for("help"))
+@bot.command(aliases=config.getCommandAliasesFor("help"))
 async def help(ctx):
     await ctx.send(embed=embeds.helpEmbed())
 
 
-@bot.command(aliases=config.get_command_aliases_for("switch"))
+@bot.command(aliases=config.getCommandAliasesFor("status"))
+async def status(ctx, serverName):
+    msg = await ctx.send("Checking server...")
+    if await server.isOnline(serverName):
+        await msg.edit(content="Server is online!")
+    else:
+        await msg.edit(content="Server is offline!")
+
+
+@bot.command(aliases=config.getCommandAliasesFor("switch"))
 @commands.guild_only()
-@commands.cooldown(1, config.get_switch_server_cooldown(), commands.BucketType.default)
+@commands.cooldown(1, config.getSwitchServerCooldown(), commands.BucketType.default)
 async def switch(ctx, serverName):
-    msg1 = await ctx.send("Checking if another server is running and if so shutting it down.")
+    msg = await ctx.send("Checking if another server is running and if so shutting it down.")
     await server.stopAll()
-    msg2 = await ctx.send(f"Starting {serverName} server.")
+    await msg.edit(content=f"Starting {serverName}...")
     await server.start(serverName)
     await asyncio.sleep(2)
     if await server.isOnline(serverName):
-        await msg1.delete()
-        await msg2.delete()
-        await ctx.send(f"{serverName} is now ONLINE!")
-    # Start server
+        await msg.edit(content="Server is now online!")
+    else:
+        await msg.edit(content="Couldn't start the server")
 
 
-@bot.command(aliases=config.get_command_aliases_for("start"))
+@bot.command(aliases=config.getCommandAliasesFor("start"))
 @commands.guild_only()
-@commands.cooldown(1, config.get_start_server_cooldown(), commands.BucketType.default)
-async def start(ctx):
-    pass
+@commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
+async def start(ctx, serverName):
+    msg = await ctx.send(f"Starting {serverName}...")
+    await server.start(serverName)
+    await asyncio.sleep(2)
+    if await server.isOnline(serverName):
+        await msg.edit(content="Server is now online!")
+    else:
+        await msg.edit(content="Couldn't start the server")
 
 
-@bot.command(aliases=config.get_command_aliases_for("stop"))
+@bot.command(aliases=config.getCommandAliasesFor("stop"))
 @commands.guild_only()
-@commands.cooldown(1, config.get_stop_server_cooldown(), commands.BucketType.default)
-async def stop(ctx):
-    pass
+@commands.cooldown(1, config.getStopServerCooldown(), commands.BucketType.default)
+async def stop(ctx, serverName):
+    msg = await ctx.send(f"Stopping {serverName}...")
+    await server.stop(serverName)
+    await asyncio.sleep(2)
+    if await server.isOnline(serverName):
+        await msg.edit(content="Something went wrong!")
+    else:
+        await msg.edit(content="Server stopped.")
 
 
-bot.run(config.get_token())
+bot.run(config.getToken())

@@ -9,12 +9,12 @@ class Embeds():
     def helpEmbed(self):
         embed = discord.Embed(
             title="Help",
-            description=f"You can use all those commands with the `{self._config.get_command_prefix()}` prefix.",
-            colour=self._config.get_bot_embed_color()
-            )
-        for command, desc in self._config.get_commands_with_description().items():
+            description=f"You can use all those commands with the `{self._config.getCommandPrefix()}` prefix.",
+            colour=self._config.getBotEmbedColor()
+        )
+        for command, desc in self._config.getCommandsWithDescription().items():
             embed.add_field(
-                name=command,
+                name=f"`{command}`",
                 value=desc,
                 inline=False
             )

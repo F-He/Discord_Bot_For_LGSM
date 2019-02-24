@@ -1,3 +1,4 @@
 config.ini
 __pycache__/*
 discord_bot/src/__pycache__/*
+.vscode/*
