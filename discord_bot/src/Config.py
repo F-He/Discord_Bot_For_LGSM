@@ -43,3 +43,9 @@ class Config(object):
     
     def getServerFilePath(self, serverName):
         return self._config["game_servers"][serverName]
+    
+    def getAllServers(self):
+        return self._config["game_servers"]
+    
+    def getRoleForExecutingCommand(self, commandName):
+        return self._config["command_settings"][commandName]

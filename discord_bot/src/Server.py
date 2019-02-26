@@ -9,14 +9,15 @@ class ServerManager():
 
     async def start(self, serverName):
         if self._config.serverExists(serverName):
-            # call(f"sudo -u gmodserver /home/gmodserver/gmodserver stop", shell=True)
             output = Popen(["sudo", "-u", serverName,
                             self._config.getServerFilePath(serverName), "start"], stdout=PIPE)
+            return self.formatStatusLine(output)
 
     async def stop(self, serverName):
         if self._config.serverExists(serverName):
-            output = Popen(
-                ["sudo", "-u", serverName, self._config.getServerFilePath(serverName), "stop"], stdout=PIPE)
+            output = Popen(["sudo", "-u", serverName,
+                            self._config.getServerFilePath(serverName), "stop"], stdout=PIPE)
+            return self.formatStatusLine(output)
 
     async def isOnline(self, serverName):
         if self._config.serverExists(serverName):
@@ -31,4 +32,10 @@ class ServerManager():
         return False
 
     async def stopAll(self):
-        pass
+        for server, serverPath in self._config.getAllServers().items():
+            Popen(["sudo", "-u", server, serverPath, "stop"], stdout=PIPE)
+
+    async def formatStatusLine(self, output):
+        output_lines = output.stdout.readlines()
+        status_line = output_lines[len(output_lines) - 1].decode("utf-8")
+        return status_line[4:]

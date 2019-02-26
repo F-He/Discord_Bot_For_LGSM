@@ -24,6 +24,8 @@ async def help(ctx):
 
 
 @bot.command(aliases=config.getCommandAliasesFor("status"))
+@commands.guild_only()
+@commands.has_role(config.getRoleForExecutingCommand("status"))
 async def status(ctx, serverName):
     msg = await ctx.send("Checking server...")
     if await server.isOnline(serverName):
@@ -34,6 +36,7 @@ async def status(ctx, serverName):
 
 @bot.command(aliases=config.getCommandAliasesFor("switch"))
 @commands.guild_only()
+@commands.has_role(config.getRoleForExecutingCommand("switch"))
 @commands.cooldown(1, config.getSwitchServerCooldown(), commands.BucketType.default)
 async def switch(ctx, serverName):
     msg = await ctx.send("Checking if another server is running and if so shutting it down.")
@@ -49,28 +52,26 @@ async def switch(ctx, serverName):
 
 @bot.command(aliases=config.getCommandAliasesFor("start"))
 @commands.guild_only()
+@commands.has_role(config.getRoleForExecutingCommand("start"))
 @commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
 async def start(ctx, serverName):
     msg = await ctx.send(f"Starting {serverName}...")
-    await server.start(serverName)
-    await asyncio.sleep(2)
-    if await server.isOnline(serverName):
-        await msg.edit(content="Server is now online!")
-    else:
-        await msg.edit(content="Couldn't start the server")
+    await ctx.trigger_typing()
+    serverMsg = await server.start(serverName)
+    await ctx.send(f"Server Message: ```\n{serverMsg}```")
+    await msg.delete()
 
 
 @bot.command(aliases=config.getCommandAliasesFor("stop"))
 @commands.guild_only()
+@commands.has_role(config.getRoleForExecutingCommand("stop"))
 @commands.cooldown(1, config.getStopServerCooldown(), commands.BucketType.default)
 async def stop(ctx, serverName):
     msg = await ctx.send(f"Stopping {serverName}...")
-    await server.stop(serverName)
-    await asyncio.sleep(2)
-    if await server.isOnline(serverName):
-        await msg.edit(content="Something went wrong!")
-    else:
-        await msg.edit(content="Server stopped.")
+    await ctx.trigger_typing()
+    serverMsg = await server.stop(serverName)
+    await ctx.send(f"Server Message: ```\n{serverMsg}```")
+    await msg.delete()
 
 
 bot.run(config.getToken())
