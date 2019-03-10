@@ -49,3 +49,6 @@ class Config(object):
     
     def getRoleForExecutingCommand(self, commandName):
         return self._config["command_settings"][commandName]
+    
+    def checkIfServerSpecified(self, serverName):
+        return self._config.has_option("game_servers", serverName)

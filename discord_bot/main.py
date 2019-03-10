@@ -27,11 +27,14 @@ async def help(ctx):
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("status"))
 async def status(ctx, serverName):
-    msg = await ctx.send("Checking server...")
-    if await server.isOnline(serverName):
-        await msg.edit(content="Server is online!")
+    if config.checkIfServerSpecified(serverName):
+        msg = await ctx.send("Checking server...")
+        if await server.isOnline(serverName):
+            await msg.edit(content="Server is online!")
+        else:
+            await msg.edit(content="Server is offline!")
     else:
-        await msg.edit(content="Server is offline!")
+        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
 
 @bot.command(aliases=config.getCommandAliasesFor("switch"))
@@ -39,15 +42,19 @@ async def status(ctx, serverName):
 @commands.has_role(config.getRoleForExecutingCommand("switch"))
 @commands.cooldown(1, config.getSwitchServerCooldown(), commands.BucketType.default)
 async def switch(ctx, serverName):
-    msg = await ctx.send("Checking if another server is running and if so shutting it down.")
-    await server.stopAll()
-    await msg.edit(content=f"Starting {serverName}...")
-    await server.start(serverName)
-    await asyncio.sleep(2)
-    if await server.isOnline(serverName):
-        await msg.edit(content="Server is now online!")
+    if config.checkIfServerSpecified(serverName):
+        msg = await ctx.send("Checking if another server is running and if so shutting it down.")
+        await server.stopAll()
+        await msg.edit(content=f"Starting {serverName}...")
+        await server.start(serverName)
+        await asyncio.sleep(2)
+        if await server.isOnline(serverName):
+            await msg.edit(content="Server is now online!")
+        else:
+            await msg.edit(content="Couldn't start the server")
     else:
-        await msg.edit(content="Couldn't start the server")
+        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
+
 
 
 @bot.command(aliases=config.getCommandAliasesFor("start"))
@@ -55,11 +62,14 @@ async def switch(ctx, serverName):
 @commands.has_role(config.getRoleForExecutingCommand("start"))
 @commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
 async def start(ctx, serverName):
-    msg = await ctx.send(f"Starting {serverName}...")
-    await ctx.trigger_typing()
-    serverMsg = await server.start(serverName)
-    await ctx.send(f"Server Message: ```\n{serverMsg}```")
-    await msg.delete()
+    if config.checkIfServerSpecified(serverName):
+        msg = await ctx.send(f"Starting {serverName}...")
+        await ctx.trigger_typing()
+        serverMsg = await server.start(serverName)
+        await ctx.send(f"Server Message: ```\n{serverMsg}```")
+        await msg.delete()
+    else:
+        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
 
 @bot.command(aliases=config.getCommandAliasesFor("stop"))
@@ -67,11 +77,14 @@ async def start(ctx, serverName):
 @commands.has_role(config.getRoleForExecutingCommand("stop"))
 @commands.cooldown(1, config.getStopServerCooldown(), commands.BucketType.default)
 async def stop(ctx, serverName):
-    msg = await ctx.send(f"Stopping {serverName}...")
-    await ctx.trigger_typing()
-    serverMsg = await server.stop(serverName)
-    await ctx.send(f"Server Message: ```\n{serverMsg}```")
-    await msg.delete()
+    if config.checkIfServerSpecified(serverName):
+        msg = await ctx.send(f"Stopping {serverName}...")
+        await ctx.trigger_typing()
+        serverMsg = await server.stop(serverName)
+        await ctx.send(f"Server Message: ```\n{serverMsg}```")
+        await msg.delete()
+    else:
+        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
 
 bot.run(config.getToken())
