@@ -34,21 +34,21 @@ class Config(object):
 
     def getStopServerCooldown(self):
         return self._config["command_settings"]["stop_server_cooldown"]
-    
+
     def serverExists(self, serverName):
         if serverName not in self._config["game_servers"]:
             return False
         else:
             return True
-    
+
     def getServerFilePath(self, serverName):
         return self._config["game_servers"][serverName]
-    
+
     def getAllServers(self):
         return self._config["game_servers"]
-    
+
     def getRoleForExecutingCommand(self, commandName):
         return self._config["command_settings"][commandName]
-    
+
     def checkIfServerSpecified(self, serverName):
         return self._config.has_option("game_servers", serverName)

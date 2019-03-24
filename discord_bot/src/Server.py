@@ -24,9 +24,12 @@ class ServerManager():
     async def isOnline(self, serverName):
         if self._config.serverExists(serverName):
             # TODO Fix this command, look at the output inside the console
-            output = Popen(["sudo", "-u", serverName, "tmux", "list-sessions", f"-F {serverName}", "2>/dev/null", "|", "grep", "-Ecx", serverName], stdout=PIPE)
+            # TODO Maybe write a shell script and execute it from here
+            output = Popen(["sudo", "-u", serverName, "tmux", "list-sessions", f"-F \"{serverName}\" 2>/dev/null", "|", "grep", "-Ecx", f"\"{serverName}\""], stdout=PIPE)
+            print(output.stdout.readline())
             output_line = output.stdout.readline()
             status_line = output_line.decode("utf-8")
+            status_line = output_line
             print(status_line)
             return bool(status_line)
         return False

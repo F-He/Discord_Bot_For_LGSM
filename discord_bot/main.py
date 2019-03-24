@@ -56,7 +56,6 @@ async def switch(ctx, serverName):
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
 
-
 @bot.command(aliases=config.getCommandAliasesFor("start"))
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("start"))
