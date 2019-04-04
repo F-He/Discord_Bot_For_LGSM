@@ -23,7 +23,7 @@ class ServerManager():
 
     async def isOnline(self, serverName):
         if self._config.serverExists(serverName):
-            output = Popen(["sudo", "bash", "src/sh/isOnline", serverName], stdout=PIPE)
+            output = Popen(["sudo", "bash", "/home/finn/discord-bots/Discord_Bot_For_LGSM/discord_bot/src/sh/isOnline", serverName], stdout=PIPE)
             output_line = output.stdout.readline()
             status_line = output_line.decode("utf-8")
             print(status_line[0])
