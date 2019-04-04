@@ -1,0 +1,3 @@
+#!/bin/bash
+# Takes the gameserver as an argument.
+sudo -u $1 tmux list-sessions -F "$1" 2>/dev/null | grep -Ecx "$1"

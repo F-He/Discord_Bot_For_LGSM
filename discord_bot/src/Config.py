@@ -8,6 +8,9 @@ class Config(object):
         self._config = configparser.ConfigParser()
         self._config.read(self._configPath)
 
+    def reloadConfig(self):
+        self._config.read(self._configPath)
+
     def getToken(self):
         return self._config["general_settings"]["bot_token"]
 

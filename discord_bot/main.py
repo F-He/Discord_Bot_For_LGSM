@@ -64,8 +64,8 @@ async def start(ctx, serverName):
     if config.checkIfServerSpecified(serverName):
         msg = await ctx.send(f"Starting {serverName}...")
         await ctx.trigger_typing()
-        serverMsg = await server.start(serverName)
-        await ctx.send(f"Server Message: ```\n{serverMsg}```")
+        await server.start(serverName)
+        await ctx.send(f"The server should be online. Check with `{config.getCommandPrefix}status {serverName}`")
         await msg.delete()
     else:
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
@@ -79,11 +79,19 @@ async def stop(ctx, serverName):
     if config.checkIfServerSpecified(serverName):
         msg = await ctx.send(f"Stopping {serverName}...")
         await ctx.trigger_typing()
-        serverMsg = await server.stop(serverName)
-        await ctx.send(f"Server Message: ```\n{serverMsg}```")
+        await server.stop(serverName)
+        await ctx.send(f"The server should be offline. Check with `{config.getCommandPrefix}status {serverName}`")
         await msg.delete()
     else:
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
+
+
+@bot.command(aliases=config.getCommandAliasesFor("reloadConfig"))
+@commands.guild_only()
+@commands.has_role(config.getRoleForExecutingCommand("reloadConfig"))
+async def reloadConfig(ctx):
+    config.reloadConfig()
+    await ctx.send("The config file as been reloaded.")
 
 
 bot.run(config.getToken())
