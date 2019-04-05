@@ -65,7 +65,7 @@ async def start(ctx, serverName):
         msg = await ctx.send(f"Starting {serverName}...")
         await ctx.trigger_typing()
         await server.start(serverName)
-        await ctx.send(f"The server should be online. Check with `{config.getCommandPrefix}status {serverName}`")
+        await ctx.send(f"The server should be online. Check with `{config.getCommandPrefix()}status {serverName}`")
         await msg.delete()
     else:
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
@@ -80,7 +80,7 @@ async def stop(ctx, serverName):
         msg = await ctx.send(f"Stopping {serverName}...")
         await ctx.trigger_typing()
         await server.stop(serverName)
-        await ctx.send(f"The server should be offline. Check with `{config.getCommandPrefix}status {serverName}`")
+        await ctx.send(f"The server should be offline. Check with `{config.getCommandPrefix()}status {serverName}`")
         await msg.delete()
     else:
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
