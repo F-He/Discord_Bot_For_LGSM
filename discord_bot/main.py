@@ -27,6 +27,7 @@ async def help(ctx):
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("list"))
 async def list(ctx):
+    # TODO Add online status to servers
     serverList = config.getAllServers()
     await ctx.send(embed=embeds.serverList(serverList))
 
