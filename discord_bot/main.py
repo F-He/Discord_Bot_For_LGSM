@@ -27,8 +27,8 @@ async def help(ctx):
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("list"))
 async def list(ctx):
-    msg = await ctx.send("Checking Server")
-    raise NotImplementedError
+    serverList = config.getAllServers()
+    await ctx.send(embed=embeds.serverList(serverList))
 
 
 @bot.command(aliases=config.getCommandAliasesFor("status"))

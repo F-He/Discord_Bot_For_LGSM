@@ -19,3 +19,14 @@ class Embeds():
                 inline=False
             )
         return embed
+
+    def serverList(self, serverList: list):
+        embedDescription = ""
+        for server in serverList:
+            embedDescription += f"{server}\n"
+        embed = discord.Embed(
+            title="Server List",
+            description=embedDescription,
+            colour=self._config.getBotEmbedColor()
+        )
+        return embed
