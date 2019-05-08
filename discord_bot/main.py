@@ -33,9 +33,9 @@ async def list(ctx):
     for serverName in serverList:
         isServerOnline = await server.isOnline(serverName)
         if isServerOnline:
-            serverDict[serverName] = Online
+            serverDict[serverName] = "Online"
         else:
-            serverDict[serverName] = 
+            serverDict[serverName] = "Offline"
     await ctx.send(embed=embeds.serverList(serverDict))
 
 
