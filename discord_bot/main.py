@@ -31,7 +31,11 @@ async def list(ctx):
     serverList = config.getAllServers()
     serverDict = {}
     for serverName in serverList:
-        serverDict[serverName] = server.isOnline(serverName)
+        isServerOnline = server.isOnline(serverName)
+        if isServerOnline:
+            serverDict[serverName] = Online
+        else:
+            serverDict[serverName] = 
     await ctx.send(embed=embeds.serverList(serverDict))
 
 
