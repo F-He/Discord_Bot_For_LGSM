@@ -31,7 +31,7 @@ async def list(ctx):
     serverList = config.getAllServers()
     serverDict = {}
     for serverName in serverList:
-        isServerOnline = server.isOnline(serverName)
+        isServerOnline = await server.isOnline(serverName)
         if isServerOnline:
             serverDict[serverName] = Online
         else:
