@@ -20,10 +20,10 @@ class Embeds():
             )
         return embed
 
-    def serverList(self, serverList: list):
+    def serverList(self, serverList: dict):
         embedDescription = ""
-        for server in serverList:
-            embedDescription += f"{server}\n"
+        for server, status in serverList.items():
+            embedDescription += f"{server}: {status}\n"
         embed = discord.Embed(
             title="Server List",
             description=embedDescription,
