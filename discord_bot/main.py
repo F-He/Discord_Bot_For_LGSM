@@ -29,9 +29,9 @@ async def help(ctx):
 async def list(ctx):
     # TODO Add online status to servers
     serverList = config.getAllServers()
-	serverDict = {}
-	for serverName in serverList:
-		serverDict[serverName] = server.isOnline(serverName)
+    serverDict = {}
+    for serverName in serverList:
+        serverDict[serverName] = server.isOnline(serverName)
     await ctx.send(embed=embeds.serverList(serverDict))
 
 
