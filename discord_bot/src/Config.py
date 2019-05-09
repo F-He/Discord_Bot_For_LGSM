@@ -20,8 +20,8 @@ class Config(object):
     def getBotStatus(self):
         return self._config["general_settings"]["bot_status"]
 
-    def getCommandAliasesFor(self, command_name: str):
-        return str(self._config["command_aliases"][command_name]).split(",")
+    def getCommandAliasesFor(self, commandName: str):
+        return str(self._config["command_aliases"][commandName]).split(",")
 
     def getBotEmbedColor(self):
         return convert_str_to_hex(self._config["general_settings"]["bot_embed_color"])
@@ -30,13 +30,13 @@ class Config(object):
         return self._config._sections["command_descriptions"]
 
     def getSwitchServerCooldown(self):
-        return self._config["command_settings"]["switch_server_cooldown"]
+        return self._config.getint("command_settings", "switch_server_cooldown")
 
     def getStartServerCooldown(self):
-        return self._config["command_settings"]["start_server_cooldown"]
+        return self._config.getint("command_settings", "start_server_cooldown")
 
     def getStopServerCooldown(self):
-        return self._config["command_settings"]["stop_server_cooldown"]
+        return self._config.getint("command_settings", "stop_server_cooldown")
 
     def serverExists(self, serverName):
         if serverName not in self._config["game_servers"]:
@@ -55,3 +55,6 @@ class Config(object):
 
     def checkIfServerSpecified(self, serverName):
         return self._config.has_option("game_servers", serverName)
+
+    def isParallelRunningAllowed(self):
+        return self._config.getboolean("general_section", "allow_parallel_running")

@@ -1,5 +1,6 @@
 import discord
 from src.Config import Config
+from src.Server import ServerManager
 
 
 class Embeds():
@@ -20,10 +21,19 @@ class Embeds():
             )
         return embed
 
-    def serverList(self, serverList: dict):
+    async def serverList(self, serverObject: ServerManager):
+        serverList = self._config.getAllServers()
+        serverDict = {}
+        for serverName in serverList:
+            isServerOnline = await serverObject.isOnline(serverName)
+            if isServerOnline:
+                serverDict[serverName] = "Online"
+            else:
+                serverDict[serverName] = "Offline"
+
         embedDescription = ""
-        for server, status in serverList.items():
-            embedDescription += f"{server}: {status}\n"
+        for serverName, status in serverList.items():
+            embedDescription += f"{serverName}: {status}\n"
         embed = discord.Embed(
             title="Server List",
             description=embedDescription,
