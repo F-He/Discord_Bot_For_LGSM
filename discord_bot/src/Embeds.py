@@ -27,13 +27,14 @@ class Embeds():
         for serverName in serverList:
             isServerOnline = await serverObject.isOnline(serverName)
             if isServerOnline:
-                serverDict[serverName] = "Online"
+                serverDict[serverName] = "`✔️ Online`"
             else:
-                serverDict[serverName] = "Offline"
+                serverDict[serverName] = "`❌ Offline`"
 
-        embedDescription = ""
+        embedDescription = "==============\n"
         for serverName, status in serverList.items():
             embedDescription += f"{serverName}: {status}\n"
+            embedDescription += "==============\n"
         embed = discord.Embed(
             title="Server List",
             description=embedDescription,
