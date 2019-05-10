@@ -44,25 +44,6 @@ async def status(ctx, serverName):
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
 
-# @bot.command(aliases=config.getCommandAliasesFor("switch"))
-# @commands.guild_only()
-# @commands.has_role(config.getRoleForExecutingCommand("switch"))
-# @commands.cooldown(1, config.getSwitchServerCooldown(), commands.BucketType.default)
-# async def switch(ctx, serverName):
-#     if config.checkIfServerSpecified(serverName):
-#         msg = await ctx.send("Checking if another server is running and if so shutting it down.")
-#         await server.stopAll()
-#         await msg.edit(content=f"Starting {serverName}...")
-#         await server.start(serverName)
-#         await asyncio.sleep(2)
-#         if await server.isOnline(serverName):
-#             await msg.edit(content="Server is now online!")
-#         else:
-#             await msg.edit(content="Couldn't start the server")
-#     else:
-#         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
-
-
 @bot.command(aliases=config.getCommandAliasesFor("start"))
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("start"))
