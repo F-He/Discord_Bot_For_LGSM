@@ -32,7 +32,7 @@ class Embeds():
                 serverDict[serverName] = "`❌ Offline`"
 
         embedDescription = "==============\n"
-        for serverName, status in serverList.items():
+        for serverName, status in serverDict.items():
             embedDescription += f"{serverName}: {status}\n"
             embedDescription += "==============\n"
         embed = discord.Embed(
