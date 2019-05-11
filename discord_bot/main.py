@@ -13,7 +13,10 @@ server = ServerManager(config)
 
 @bot.event
 async def on_ready():
-    print("Online")
+    print("========Online========")
+    print(f"Discord.py Version: {discord.__version__}")
+    print(f"Latency: {round(bot.latency, 2)} sec")
+    print(f"Connected as: {bot.user.name}")
     await bot.change_presence(activity=discord.Game(name=config.getBotStatus()))
 
 
@@ -33,6 +36,7 @@ async def list(ctx):
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("status"))
 async def status(ctx, serverName):
+    # TODO Send embed messages instead of normal ones.
     if config.checkIfServerSpecified(serverName):
         msg = await ctx.send("Checking server...")
         if await server.isOnline(serverName):
@@ -56,7 +60,7 @@ async def start(ctx, serverName):
             await ctx.send(f"The server should be online. Check with `{config.getCommandPrefix()}status {serverName}`")
             await msg.delete()
         else:
-            await ctx.send(embed=embeds.maxParallelServerCountExceeded())
+            await ctx.send(embed=await embeds.maxParallelServerCountExceeded())
     else:
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
