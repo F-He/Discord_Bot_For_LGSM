@@ -3,7 +3,6 @@ from discord.ext import commands
 from src.Config import Config
 from src.Embeds import Embeds
 from src.Server import ServerManager
-import asyncio
 
 config = Config(__file__[:-7] + "config.ini")
 bot = commands.Bot(command_prefix=config.getCommandPrefix())
@@ -49,17 +48,17 @@ async def status(ctx, serverName):
 @commands.has_role(config.getRoleForExecutingCommand("start"))
 @commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
 async def start(ctx, serverName):
-    if config.isParallelRunningAllowed():
-        if config.checkIfServerSpecified(serverName):
+    if config.checkIfServerSpecified(serverName):
+        if serverAllowedToStart():
             msg = await ctx.send(f"Starting {serverName}...")
             await ctx.trigger_typing()
             await server.start(serverName)
             await ctx.send(f"The server should be online. Check with `{config.getCommandPrefix()}status {serverName}`")
             await msg.delete()
         else:
-            await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
+            await ctx.send(embed=embeds.maxParallelServerCountExceeded())
     else:
-        pass
+        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
 
 @bot.command(aliases=config.getCommandAliasesFor("stop"))
@@ -74,7 +73,7 @@ async def stop(ctx, serverName):
         await ctx.send(f"The server should be offline. Check with `{config.getCommandPrefix()}status {serverName}`")
         await msg.delete()
     else:
-        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
+        await ctx.send(f"The given server name (`{serverName}`) is not specified inside the `config.ini`")
 
 
 @bot.command(aliases=config.getCommandAliasesFor("reloadConfig"))
@@ -84,5 +83,14 @@ async def reloadConfig(ctx):
     config.reloadConfig()
     await ctx.send("The config file as been reloaded.")
 
+
+async def serverAllowedToStart(serverName: str):
+    if config.isParallelRunningAllowed():
+        return True
+    else:
+        if server.runningServerCount() < config.getMaxParallelRunningCount():
+            return True
+        else:
+            return False
 
 bot.run(config.getToken())

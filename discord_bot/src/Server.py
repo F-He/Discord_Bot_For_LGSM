@@ -23,6 +23,7 @@ class ServerManager():
 
     async def isOnline(self, serverName):
         if self._config.serverExists(serverName):
+            # TODO Get the true PATH for the isOnline file
             output = Popen(["sudo", "bash", "/home/finn/discord-bots/Discord_Bot_For_LGSM/discord_bot/src/sh/isOnline", serverName], stdout=PIPE)
             output_line = output.stdout.readline()
             status_line = output_line.decode("utf-8")
@@ -39,3 +40,10 @@ class ServerManager():
         output_lines = output.stdout.readlines()
         status_line = output_lines[len(output_lines) - 1].decode("utf-8")
         return status_line[4:]
+
+    async def runningServerCount(self):
+        serverCount = 0
+        for serverName, serverPath in self._config.getAllServers().items():
+            if await self.isOnline(serverName):
+                serverCount += 1
+        return serverCount

@@ -29,9 +29,6 @@ class Config(object):
     def getCommandsWithDescription(self):
         return self._config._sections["command_descriptions"]
 
-    def getSwitchServerCooldown(self):
-        return self._config.getint("command_settings", "switch_server_cooldown")
-
     def getStartServerCooldown(self):
         return self._config.getint("command_settings", "start_server_cooldown")
 
@@ -58,3 +55,6 @@ class Config(object):
 
     def isParallelRunningAllowed(self):
         return self._config.getboolean("general_section", "allow_parallel_running")
+
+    def getMaxParallelRunningCount(self):
+        return self._config.getint("general_section", "max_parallel_running_count")

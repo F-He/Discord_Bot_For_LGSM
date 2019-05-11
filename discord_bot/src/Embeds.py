@@ -41,3 +41,11 @@ class Embeds():
             colour=self._config.getBotEmbedColor()
         )
         return embed
+
+    async def maxParallelServerCountExceeded(self):
+        embed = discord.Embed(
+            title="Max parallel server count exceeded!",
+            description=f"Stop another Server with `{self._config.getCommandPrefix()}stop serverName` or increase the `max_parallel_running_count` setting inside the `config.ini` file.",
+            colour=self._config.getBotEmbedColor()
+        )
+        return embed
