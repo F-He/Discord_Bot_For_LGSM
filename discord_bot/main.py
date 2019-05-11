@@ -49,7 +49,7 @@ async def status(ctx, serverName):
 @commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
 async def start(ctx, serverName):
     if config.checkIfServerSpecified(serverName):
-        if serverAllowedToStart():
+        if serverAllowedToStart(serverName):
             msg = await ctx.send(f"Starting {serverName}...")
             await ctx.trigger_typing()
             await server.start(serverName)
