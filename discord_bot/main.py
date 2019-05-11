@@ -49,7 +49,7 @@ async def status(ctx, serverName):
 @commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
 async def start(ctx, serverName):
     if config.checkIfServerSpecified(serverName):
-        if serverAllowedToStart(serverName):
+        if await serverAllowedToStart(serverName):
             msg = await ctx.send(f"Starting {serverName}...")
             await ctx.trigger_typing()
             await server.start(serverName)
@@ -86,9 +86,12 @@ async def reloadConfig(ctx):
 
 async def serverAllowedToStart(serverName: str):
     if config.isParallelRunningAllowed():
-        return True
+        if await server.runningServerCount() < config.getMaxParallelRunningCount():
+            return True
+        else:
+            return False
     else:
-        if server.runningServerCount() < config.getMaxParallelRunningCount():
+        if await server.runningServerCount() < 1:
             return True
         else:
             return False
