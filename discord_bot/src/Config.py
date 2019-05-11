@@ -54,7 +54,7 @@ class Config(object):
         return self._config.has_option("game_servers", serverName)
 
     def isParallelRunningAllowed(self):
-        return self._config.getboolean("general_section", "allow_parallel_running")
+        return self._config.getboolean("general_settings", "allow_parallel_running")
 
     def getMaxParallelRunningCount(self):
-        return self._config.getint("general_section", "max_parallel_running_count")
+        return self._config.getint("general_settings", "max_parallel_running_count")
