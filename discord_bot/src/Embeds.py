@@ -9,30 +9,24 @@ class Embeds():
 
     def helpEmbed(self):
         embed = self.defaultEmbed("Help", f"You can use all those commands with the `{self._config.getCommandPrefix()}` prefix.")
-        for command, desc in self._config.getCommandsWithDescription().items():
-            embed.add_field(
-                name=f"`{command}`",
-                value=desc,
-                inline=False
-            )
+        self.addHelpEmbedFields(embed)
         return embed
+
+    def addHelpEmbedFields(self, embed: discord.Embed):
+        for command, desc in self._config.getCommandsWithDescription().items():
+            embed.add_field(name=f"`{command}`", value=desc, inline=False)
 
     async def serverList(self, serverObject: ServerManager):
-        serverList = self._config.getAllServers()
-        serverDict = {}
-        for serverName in serverList:
-            isServerOnline = await serverObject.isOnline(serverName)
-            if isServerOnline:
-                serverDict[serverName] = "`✔️ Online`"
-            else:
-                serverDict[serverName] = "`❌ Offline`"
-
-        embedDescription = "==============\n"
-        for serverName, status in serverDict.items():
-            embedDescription += f"{serverName}: {status}\n"
-            embedDescription += "==============\n"
-        embed = self.defaultEmbed("Server List", embedDescription)
+        serverDict = await serverObject.getServerStatusDict()
+        embed = self.defaultEmbed("Server List", await self.serverListDescription(serverDict))
         return embed
+
+    async def serverListDescription(self, serverDict: dict):
+        description = "==============\n"
+        for serverName, status in serverDict.items():
+            description += f"{serverName}: {status}\n"
+            description += "==============\n"
+        return description
 
     async def maxParallelServerCountExceeded(self):
         embed = self.defaultEmbed(

@@ -6,8 +6,9 @@ from src.Config import Config
 
 
 class ServerManager():
-    def __init__(self, configObject: Config):
+    def __init__(self, configObject: Config, projectPath: str):
         self._config = configObject
+        self._projectPath = projectPath
 
     async def start(self, serverName):
         if self._config.serverExists(serverName):
@@ -22,9 +23,10 @@ class ServerManager():
             return await self.formatStatusLine(output)
 
     async def isOnline(self, serverName):
+        return True
         if self._config.serverExists(serverName):
             # TODO Get the true PATH for the isOnline file
-            output = Popen(["sudo", "bash", "/home/finn/discord-bots/Discord_Bot_For_LGSM/discord_bot/src/sh/isOnline", serverName], stdout=PIPE)
+            output = Popen(["sudo", "bash", self._projectPath + "/src/sh/isOnline", serverName], stdout=PIPE)
             output_line = output.stdout.readline()
             status_line = output_line.decode("utf-8")
             if "1" in status_line:
@@ -47,3 +49,13 @@ class ServerManager():
             if await self.isOnline(serverName):
                 serverCount += 1
         return serverCount
+
+    async def getServerStatusDict(self):
+        serverDict = {}
+        for serverName in self._config.getAllServers():
+            isServerOnline = await self.isOnline(serverName)
+            if isServerOnline:
+                serverDict[serverName] = "`✔️ Online`"
+            else:
+                serverDict[serverName] = "`❌ Offline`"
+        return serverDict

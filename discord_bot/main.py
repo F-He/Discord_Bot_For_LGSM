@@ -1,22 +1,22 @@
 import discord
+import os
 from discord.ext import commands
 from src.Config import Config
 from src.Embeds import Embeds
 from src.Server import ServerManager
 
-config = Config(__file__[:-7] + "config.ini")
+__version__ = "0.1.0"
+projectPath = os.path.dirname(os.path.abspath(__file__))
+config = Config(projectPath + "/config.ini")
 bot = commands.Bot(command_prefix=config.getCommandPrefix())
 bot.remove_command("help")
 embeds = Embeds(config)
-server = ServerManager(config)
+server = ServerManager(config, projectPath)
 
 
 @bot.event
 async def on_ready():
-    print("========Online========")
-    print(f"Discord.py Version: {discord.__version__}")
-    print(f"Latency: {round(bot.latency, 2)} sec")
-    print(f"Connected as: {bot.user.name}")
+    startupPrints()
     await bot.change_presence(activity=discord.Game(name=config.getBotStatus()))
 
 
@@ -36,13 +36,12 @@ async def list(ctx):
 @commands.guild_only()
 @commands.has_role(config.getRoleForExecutingCommand("status"))
 async def status(ctx, serverName):
-    # TODO Send embed messages instead of normal ones.
     if config.checkIfServerSpecified(serverName):
         msg = await ctx.send("Checking server...")
         if await server.isOnline(serverName):
-            await msg.edit(content="Server is online!")
+            await msg.edit(embed=await embeds.isOnline())
         else:
-            await msg.edit(content="Server is offline!")
+            await msg.edit(embed=await embeds.isOffline())
     else:
         await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
 
@@ -99,5 +98,15 @@ async def serverAllowedToStart(serverName: str):
             return True
         else:
             return False
+
+
+def startupPrints():
+    print("========Online========")
+    print(f"Bot Version: {__version__}")
+    print(f"Discord.py Version: {discord.__version__}")
+    print(f"Latency: {round(bot.latency, 2)} sec")
+    print(f"Connected as: {bot.user.name}")
+    print(f"Path: {projectPath}")
+
 
 bot.run(config.getToken())
