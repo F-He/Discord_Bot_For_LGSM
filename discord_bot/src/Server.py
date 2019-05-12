@@ -6,27 +6,27 @@ from src.Config import Config
 
 
 class ServerManager():
-    def __init__(self, configObject: Config, projectPath: str):
-        self._config = configObject
-        self._projectPath = projectPath
+    def __init__(self, config_object: Config, project_path: str):
+        self._config = config_object
+        self._project_path = project_path
 
-    async def start(self, serverName):
-        if self._config.serverExists(serverName):
-            output = Popen(["sudo", "-u", serverName,
-                            self._config.getServerFilePath(serverName), "start"], stdout=PIPE)
-            return await self.formatStatusLine(output)
+    async def start(self, server_name):
+        if self._config.server_exists(server_name):
+            output = Popen(["sudo", "-u", server_name,
+                            self._config.get_server_file_path(server_name), "start"], stdout=PIPE)
+            return await self.format_status_line(output)
 
-    async def stop(self, serverName):
-        if self._config.serverExists(serverName):
-            output = Popen(["sudo", "-u", serverName,
-                            self._config.getServerFilePath(serverName), "stop"], stdout=PIPE)
-            return await self.formatStatusLine(output)
+    async def stop(self, server_name):
+        if self._config.server_exists(server_name):
+            output = Popen(["sudo", "-u", server_name,
+                            self._config.get_server_file_path(server_name), "stop"], stdout=PIPE)
+            return await self.format_status_line(output)
 
-    async def isOnline(self, serverName):
+    async def is_online(self, server_name):
         return True
-        if self._config.serverExists(serverName):
+        if self._config.server_exists(server_name):
             # TODO Get the true PATH for the isOnline file
-            output = Popen(["sudo", "bash", self._projectPath + "/src/sh/isOnline", serverName], stdout=PIPE)
+            output = Popen(["sudo", "bash", self._project_path + "/src/sh/isOnline", server_name], stdout=PIPE)
             output_line = output.stdout.readline()
             status_line = output_line.decode("utf-8")
             if "1" in status_line:
@@ -34,28 +34,28 @@ class ServerManager():
             return False
         return False
 
-    async def stopAll(self):
-        for server, serverPath in self._config.getAllServers().items():
-            Popen(["sudo", "-u", server, serverPath, "stop"], stdout=PIPE)
+    async def stop_all(self):
+        for server, server_path in self._config.get_all_servers().items():
+            Popen(["sudo", "-u", server, server_path, "stop"], stdout=PIPE)
 
-    async def formatStatusLine(self, output):
+    async def format_status_line(self, output):
         output_lines = output.stdout.readlines()
         status_line = output_lines[len(output_lines) - 1].decode("utf-8")
         return status_line[4:]
 
-    async def runningServerCount(self):
-        serverCount = 0
-        for serverName, serverPath in self._config.getAllServers().items():
-            if await self.isOnline(serverName):
-                serverCount += 1
-        return serverCount
+    async def running_server_count(self):
+        server_count = 0
+        for server_name, server_path in self._config.get_all_servers().items():
+            if await self.is_online(server_name):
+                server_count += 1
+        return server_count
 
-    async def getServerStatusDict(self):
-        serverDict = {}
-        for serverName in self._config.getAllServers():
-            isServerOnline = await self.isOnline(serverName)
-            if isServerOnline:
-                serverDict[serverName] = "`✔️ Online`"
+    async def get_server_status_dict(self):
+        server_dict = {}
+        for server_name in self._config.get_all_servers():
+            is_server_online = await self.is_online(server_name)
+            if is_server_online:
+                server_dict[server_name] = "`✔️ Online`"
             else:
-                serverDict[serverName] = "`❌ Offline`"
-        return serverDict
+                server_dict[server_name] = "`❌ Offline`"
+        return server_dict

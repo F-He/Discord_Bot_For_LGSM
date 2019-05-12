@@ -8,7 +8,7 @@ from src.Server import ServerManager
 __version__ = "0.1.0"
 projectPath = os.path.dirname(os.path.abspath(__file__))
 config = Config(projectPath + "/config.ini")
-bot = commands.Bot(command_prefix=config.getCommandPrefix())
+bot = commands.Bot(command_prefix=config.get_command_prefix())
 bot.remove_command("help")
 embeds = Embeds(config)
 server = ServerManager(config, projectPath)
@@ -16,91 +16,91 @@ server = ServerManager(config, projectPath)
 
 @bot.event
 async def on_ready():
-    startupPrints()
-    await bot.change_presence(activity=discord.Game(name=config.getBotStatus()))
+    startup_prints()
+    await bot.change_presence(activity=discord.Game(name=config.get_bot_status()))
 
 
-@bot.command(aliases=config.getCommandAliasesFor("help"))
+@bot.command(aliases=config.get_command_aliases_for("help"))
 async def help(ctx):
-    await ctx.send(embed=embeds.helpEmbed())
+    await ctx.send(embed=embeds.help_embed())
 
 
-@bot.command(aliases=config.getCommandAliasesFor("list"))
+@bot.command(aliases=config.get_command_aliases_for("list"))
 @commands.guild_only()
-@commands.has_role(config.getRoleForExecutingCommand("list"))
+@commands.has_role(config.get_role_for_executing_command("list"))
 async def list(ctx):
-    await ctx.send(embed=await embeds.serverList(server))
+    await ctx.send(embed=await embeds.server_list(server))
 
 
-@bot.command(aliases=config.getCommandAliasesFor("status"))
+@bot.command(aliases=config.get_command_aliases_for("status"))
 @commands.guild_only()
-@commands.has_role(config.getRoleForExecutingCommand("status"))
-async def status(ctx, serverName):
-    if config.checkIfServerSpecified(serverName):
+@commands.has_role(config.get_role_for_executing_command("status"))
+async def status(ctx, server_name):
+    if config.check_if_server_specified(server_name):
         msg = await ctx.send("Checking server...")
-        if await server.isOnline(serverName):
-            await msg.edit(embed=await embeds.isOnline())
+        if await server.is_online(server_name):
+            await msg.edit(embed=await embeds.is_online())
         else:
-            await msg.edit(embed=await embeds.isOffline())
+            await msg.edit(embed=await embeds.is_offline())
     else:
-        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
+        await ctx.send(f"The given server name(`{server_name}`) is not specified inside the `config.ini`")
 
 
-@bot.command(aliases=config.getCommandAliasesFor("start"))
+@bot.command(aliases=config.get_command_aliases_for("start"))
 @commands.guild_only()
-@commands.has_role(config.getRoleForExecutingCommand("start"))
-@commands.cooldown(1, config.getStartServerCooldown(), commands.BucketType.default)
-async def start(ctx, serverName):
-    if config.checkIfServerSpecified(serverName):
-        if await serverAllowedToStart(serverName):
-            msg = await ctx.send(f"Starting {serverName}...")
+@commands.has_role(config.get_role_for_executing_command("start"))
+@commands.cooldown(1, config.get_start_server_cooldown(), commands.BucketType.default)
+async def start(ctx, server_name):
+    if config.check_if_server_specified(server_name):
+        if await server_allowed_to_start():
+            msg = await ctx.send(f"Starting {server_name}...")
             await ctx.trigger_typing()
-            await server.start(serverName)
-            await ctx.send(f"The server should be online. Check with `{config.getCommandPrefix()}status {serverName}`")
+            await server.start(server_name)
+            await ctx.send(f"The server should be online. Check with `{config.get_command_prefix()}status {server_name}`")
             await msg.delete()
         else:
-            await ctx.send(embed=await embeds.maxParallelServerCountExceeded())
+            await ctx.send(embed=await embeds.max_parallel_server_count_exceeded())
     else:
-        await ctx.send(f"The given server name(`{serverName}`) is not specified inside the `config.ini`")
+        await ctx.send(f"The given server name(`{server_name}`) is not specified inside the `config.ini`")
 
 
-@bot.command(aliases=config.getCommandAliasesFor("stop"))
+@bot.command(aliases=config.get_command_aliases_for("stop"))
 @commands.guild_only()
-@commands.has_role(config.getRoleForExecutingCommand("stop"))
-@commands.cooldown(1, config.getStopServerCooldown(), commands.BucketType.default)
-async def stop(ctx, serverName):
-    if config.checkIfServerSpecified(serverName):
-        msg = await ctx.send(f"Stopping {serverName}...")
+@commands.has_role(config.get_role_for_executing_command("stop"))
+@commands.cooldown(1, config.get_stop_server_cooldown(), commands.BucketType.default)
+async def stop(ctx, server_name):
+    if config.check_if_server_specified(server_name):
+        msg = await ctx.send(f"Stopping {server_name}...")
         await ctx.trigger_typing()
-        await server.stop(serverName)
-        await ctx.send(f"The server should be offline. Check with `{config.getCommandPrefix()}status {serverName}`")
+        await server.stop(server_name)
+        await ctx.send(f"The server should be offline. Check with `{config.get_command_prefix()}status {server_name}`")
         await msg.delete()
     else:
-        await ctx.send(f"The given server name (`{serverName}`) is not specified inside the `config.ini`")
+        await ctx.send(f"The given server name (`{server_name}`) is not specified inside the `config.ini`")
 
 
-@bot.command(aliases=config.getCommandAliasesFor("reloadConfig"))
+@bot.command(aliases=config.get_command_aliases_for("reloadConfig"))
 @commands.guild_only()
-@commands.has_role(config.getRoleForExecutingCommand("reloadConfig"))
+@commands.has_role(config.get_role_for_executing_command("reloadConfig"))
 async def reloadConfig(ctx):
-    config.reloadConfig()
+    config.reload_config()
     await ctx.send("The config file as been reloaded.")
 
 
-async def serverAllowedToStart(serverName: str):
-    if config.isParallelRunningAllowed():
-        if await server.runningServerCount() < config.getMaxParallelRunningCount():
+async def server_allowed_to_start():
+    if config.is_parallel_running_allowed():
+        if await server.running_server_count() < config.get_max_parallel_running_count():
             return True
         else:
             return False
     else:
-        if await server.runningServerCount() < 1:
+        if await server.running_server_count() < 1:
             return True
         else:
             return False
 
 
-def startupPrints():
+def startup_prints():
     print("========Online========")
     print(f"Bot Version: {__version__}")
     print(f"Discord.py Version: {discord.__version__}")
@@ -109,4 +109,4 @@ def startupPrints():
     print(f"Path: {projectPath}")
 
 
-bot.run(config.getToken())
+bot.run(config.get_token())

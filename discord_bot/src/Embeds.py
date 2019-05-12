@@ -7,49 +7,49 @@ class Embeds():
     def __init__(self, configObject: Config):
         self._config = configObject
 
-    def helpEmbed(self):
-        embed = self.defaultEmbed("Help", f"You can use all those commands with the `{self._config.getCommandPrefix()}` prefix.")
-        self.addHelpEmbedFields(embed)
+    def help_embed(self):
+        embed = self.default_embed("Help", f"You can use all those commands with the `{self._config.get_command_prefix()}` prefix.")
+        self.add_help_embed_fields(embed)
         return embed
 
-    def addHelpEmbedFields(self, embed: discord.Embed):
-        for command, desc in self._config.getCommandsWithDescription().items():
+    def add_help_embed_fields(self, embed: discord.Embed):
+        for command, desc in self._config.get_commands_with_description().items():
             embed.add_field(name=f"`{command}`", value=desc, inline=False)
 
-    async def serverList(self, serverObject: ServerManager):
-        serverDict = await serverObject.getServerStatusDict()
-        embed = self.defaultEmbed("Server List", await self.serverListDescription(serverDict))
+    async def server_list(self, server_object: ServerManager):
+        server_dict = await server_object.get_server_status_dict()
+        embed = self.default_embed("Server List", await self.server_list_description(server_dict))
         return embed
 
-    async def serverListDescription(self, serverDict: dict):
+    async def server_list_description(self, server_dict: dict):
         description = "==============\n"
-        for serverName, status in serverDict.items():
-            description += f"{serverName}: {status}\n"
+        for server_name, status in server_dict.items():
+            description += f"{server_name}: {status}\n"
             description += "==============\n"
         return description
 
-    async def maxParallelServerCountExceeded(self):
-        embed = self.defaultEmbed(
+    async def max_parallel_server_count_exceeded(self):
+        embed = self.default_embed(
             "Max parallel server count exceeded!",
-            f"Stop another Server with `{self._config.getCommandPrefix()}stop serverName` or increase the `max_parallel_running_count` setting inside the `config.ini` file."
+            f"Stop another Server with `{self._config.get_command_prefix()}stop serverName` or increase the `max_parallel_running_count` setting inside the `config.ini` file."
         )
         return embed
 
-    async def isOnline(self):
-        embed = self.defaultEmbed("Server Status", "✔️ Is Online", 0x1cd10c)
+    async def is_online(self):
+        embed = self.default_embed("Server Status", "✔️ Is Online", 0x1cd10c)
         return embed
 
-    async def isOffline(self):
-        embed = self.defaultEmbed("Server Status", "❌ Is Offline", 0xce0808)
+    async def is_offline(self):
+        embed = self.default_embed("Server Status", "❌ Is Offline", 0xce0808)
         return embed
 
-    def defaultEmbed(self, title, description, color=None):
-        embedColor = color
+    def default_embed(self, title, description, color=None):
+        embed_color = color
         if color is None:
-            embedColor = self._config.getBotEmbedColor()
-        defaultEmbed = discord.Embed(
+            embed_color = self._config.get_bot_embed_color()
+        default_embed = discord.Embed(
             title=title,
             description=description,
-            colour=embedColor
+            colour=embed_color
         )
-        return defaultEmbed
+        return default_embed
