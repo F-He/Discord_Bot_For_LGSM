@@ -1,6 +1,6 @@
 {
     "version": "0.1.0",
-    "update_file_url": "",
+    "update_file_url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/update_info.json?token=AGGAI2HIH2LFZ2AFPRZMRBS44LIZY",
 
     "file_data": {
         "main.py": {
