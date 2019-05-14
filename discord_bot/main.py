@@ -4,14 +4,18 @@ from discord.ext import commands
 from src.Config import Config
 from src.Embeds import Embeds
 from src.Server import ServerManager
+from src.Updater import Updater
 
-__version__ = "0.1.0"
-projectPath = os.path.dirname(os.path.abspath(__file__))
-config = Config(projectPath + "/config.ini")
+project_path = os.path.dirname(os.path.abspath(__file__))
+updater = Updater(project_path)
+updater.check_version()
+__version__ = updater.get_version()
+
+config = Config(project_path + "/config.ini")
 bot = commands.Bot(command_prefix=config.get_command_prefix())
 bot.remove_command("help")
 embeds = Embeds(config)
-server = ServerManager(config, projectPath)
+server = ServerManager(config, project_path)
 
 
 @bot.event
@@ -106,7 +110,7 @@ def startup_prints():
     print(f"Discord.py Version: {discord.__version__}")
     print(f"Latency: {round(bot.latency, 2)} sec")
     print(f"Connected as: {bot.user.name}")
-    print(f"Path: {projectPath}")
+    print(f"Path: {project_path}")
 
 
 bot.run(config.get_token())
