@@ -8,8 +8,9 @@ from src.Updater import Updater
 
 project_path = os.path.dirname(os.path.abspath(__file__))
 updater = Updater(project_path)
-updater.check_version()
 __version__ = updater.get_version()
+
+updater.start()
 
 config = Config(project_path + "/config.ini")
 bot = commands.Bot(command_prefix=config.get_command_prefix())
