@@ -84,6 +84,14 @@ async def stop(ctx, server_name):
         await ctx.send(f"The given server name (`{server_name}`) is not specified inside the `config.ini`")
 
 
+@bot.command(aliases=config.get_command_aliases_for("update"))
+@commands.guild_only()
+@commands.has_role(config.get_role_for_executing_command("update"))
+async def update(ctx):
+    await ctx.send("Starting update.")
+    updater.start()
+
+
 @bot.command(aliases=config.get_command_aliases_for("reloadConfig"))
 @commands.guild_only()
 @commands.has_role(config.get_role_for_executing_command("reloadConfig"))
