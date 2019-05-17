@@ -90,6 +90,7 @@ async def stop(ctx, server_name):
 async def update(ctx):
     await ctx.send("Starting update.")
     updater.start()
+    # update done, restart the bot now
 
 
 @bot.command(aliases=config.get_command_aliases_for("reloadConfig"))
