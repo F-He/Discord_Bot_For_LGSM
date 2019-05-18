@@ -6,8 +6,8 @@ update_info_json_path = "/src/update_info.json"
 
 class Updater():
     def __init__(self, project_path: str):
-        # self._project_path = project_path
-        self._project_path = "E:\\Repos\\Python\\Discord_Bot_For_LGSM\\testing"
+        self._project_path = project_path
+        # self._project_path = "E:\\Repos\\Python\\Discord_Bot_For_LGSM\\testing"
         self._update_info_file_data = self._load_update_info()
 
     def _load_update_info(self):

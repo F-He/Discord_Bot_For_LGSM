@@ -1,4 +1,6 @@
+#!/usr/bin/python3.7
 import discord
+import sys
 import os
 from discord.ext import commands
 from src.Config import Config
@@ -9,8 +11,6 @@ from src.Updater import Updater
 project_path = os.path.dirname(os.path.abspath(__file__))
 updater = Updater(project_path)
 __version__ = updater.get_version()
-
-updater.start()
 
 config = Config(project_path + "/config.ini")
 bot = commands.Bot(command_prefix=config.get_command_prefix())
@@ -88,9 +88,13 @@ async def stop(ctx, server_name):
 @commands.guild_only()
 @commands.has_role(config.get_role_for_executing_command("update"))
 async def update(ctx):
-    await ctx.send("Starting update.")
-    updater.start()
-    # update done, restart the bot now
+    if updater._up_to_date():
+        await ctx.send("Already up to date.")
+    else:
+        await ctx.send("Starting update...")
+        updater.start()
+        await ctx.send("Update done! Restarting...")
+        os.execl(sys.executable, sys.executable, * sys.argv)
 
 
 @bot.command(aliases=config.get_command_aliases_for("reloadConfig"))

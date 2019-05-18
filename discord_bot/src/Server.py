@@ -1,8 +1,5 @@
 from subprocess import Popen, PIPE
 from src.Config import Config
-# sudo -u gmodserver /home/gmodserver/gmodserver details
-# tmux list-sessions -F "mcserver" 2>/dev/null | grep -Ecx "mcserver"
-# tmux list-sessions -F "mcserver" 2>/dev/null | grep -Ecx "mcserver"
 
 
 class ServerManager():
@@ -25,7 +22,6 @@ class ServerManager():
     async def is_online(self, server_name):
         return True
         if self._config.server_exists(server_name):
-            # TODO Get the true PATH for the isOnline file
             output = Popen(["sudo", "bash", self._project_path + "/src/sh/isOnline", server_name], stdout=PIPE)
             output_line = output.stdout.readline()
             status_line = output_line.decode("utf-8")
