@@ -95,6 +95,7 @@ async def update(ctx):
         updater.start()
         await ctx.send("Update done! Restarting...")
         os.execl(sys.executable, sys.executable, * sys.argv)
+        exit()
 
 
 @bot.command(aliases=config.get_command_aliases_for("reloadConfig"))

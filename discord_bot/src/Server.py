@@ -20,7 +20,6 @@ class ServerManager():
             return await self.format_status_line(output)
 
     async def is_online(self, server_name):
-        return True
         if self._config.server_exists(server_name):
             output = Popen(["sudo", "bash", self._project_path + "/src/sh/isOnline", server_name], stdout=PIPE)
             output_line = output.stdout.readline()

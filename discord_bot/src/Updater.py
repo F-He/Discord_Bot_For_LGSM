@@ -52,8 +52,6 @@ class Updater():
     def start(self):
         if not self._up_to_date():
             self._update()
-        else:
-            pass
 
     def _update(self):
         print("Starting update")

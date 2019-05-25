@@ -1,35 +1,35 @@
 {
     "version": "0.0.0",
-    "update_file_url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/update_info.json?token=AGGAI2HIH2LFZ2AFPRZMRBS44LIZY",
+    "update_file_url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/update_info.json",
 
     "file_data": {
         "main.py": {
             "path": "/main.py",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/main.py?token=AGGAI2E5Y57C6547LJFA45K44F7JO"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/main.py"
         },
         "Config.py": {
             "path": "/src/Config.py",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Config.py?token=AGGAI2CWJWEXFTVWJXNFXUS44LIGO"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Config.py"
         },
         "Embeds.py": {
             "path": "/src/Embeds.py",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Embeds.py?token=AGGAI2FTIRE6OAKP7HFXW2K44LIHK"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Embeds.py"
         },
         "Server.py": {
             "path": "/src/Server.py",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Server.py?token=AGGAI2ET4EX5X3VVCH55CU244LIIA"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Server.py"
         },
         "Updater.py": {
             "path": "/src/Updater.py",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Updater.py?token=AGGAI2ACH5GRB26JCY72ZCK44LIIS"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Updater.py"
         },
         "Utils.py": {
             "path": "/src/Utils.py",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Utils.py?token=AGGAI2DI6UQQLZ2IC4FPOQC44LIJQ"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/Utils.py"
         },
         "isOnline": {
             "path": "/src/sh/isOnline",
-            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/sh/isOnline?token=AGGAI2D3PHRNSW2VLJQZQAS44LIKE"
+            "url": "https://raw.githubusercontent.com/F-He/Discord_Bot_For_LGSM/master/discord_bot/src/sh/isOnline"
         }
     }
 }
