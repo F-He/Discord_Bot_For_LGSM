@@ -10,9 +10,8 @@ class ServerManager():
 
     async def start(self, server_name):
         if self._config.server_exists(server_name):
-            Popen(["cd", os.path.dirname(os.path.abspath(self._config.get_server_file_path(server_name)))], stdout=PIPE)
             output = Popen(["sudo", "-u", server_name,
-                            self._config.get_server_file_path(server_name), "start"], stdout=PIPE)
+                            self._config.get_server_file_path(server_name), "start"], stdout=PIPE, cwd=os.path.dirname(os.path.abspath(self._config.get_server_file_path(server_name))))
             return await self.format_status_line(output)
 
     async def stop(self, server_name):
