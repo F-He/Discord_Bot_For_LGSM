@@ -89,3 +89,5 @@ list = Lists every configured server.
 update = Updates the bot if an update is available
 reloadConfig = Reloads the bot config.
 ```
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
