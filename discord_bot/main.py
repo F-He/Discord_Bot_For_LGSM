@@ -126,7 +126,6 @@ def startup_prints():
     print(f"Latency: {round(bot.latency, 2)} sec")
     print(f"Connected as: {bot.user.name}")
     print(f"Path: {project_path}")
-    print(os.path.dirname(os.path.abspath("/home/mcserver/mcserver")))
 
 
 bot.run(config.get_token())
