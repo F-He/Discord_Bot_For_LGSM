@@ -41,14 +41,12 @@ max_parallel_running_count = 200
 ; Cooldown time in seconds between server commands.
 start_server_cooldown = 30
 stop_server_cooldown = 10
-switch_server_cooldown = 30
 
 ; Specify which role can execute a command.
 ; Can currently only be one role.
 ; The role name needs to be the exact same as in discord(including caps and spelling).
 list = @everyone
 status = @everyone
-switch = @everyone
 start = @everyone
 stop = @everyone
 update = @everyone
@@ -76,7 +74,6 @@ seven_days = /home/seven_days/sdtdserver
 ; Split aliases with "," like this: help,info,?,serverinfo 
 help = info,?,hp
 status = stat,su
-switch = sh
 start = st
 stop = sp
 update = ud
@@ -86,7 +83,6 @@ list = ls
 
 [command_descriptions]
 help = Shows all Commands.
-switch = Starts the given server and shuts down every other gameserver running. [`switch <serverName>`]
 start = Starts a Server. [`start <serverName>`]
 stop = Stops a Server. [`stop <serverName>`]
 list = Lists every configured server.
