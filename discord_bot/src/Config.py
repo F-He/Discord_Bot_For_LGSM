@@ -17,6 +17,8 @@ class Config(object):
             with open(config_path, "wb") as file:
                 file.write(base64.b64decode(default_config))
             self._config.read(self._config_path)
+        except Exception as e:
+            raise e
 
     def reload_config(self):
         self._config.read(self._config_path)
@@ -25,7 +27,10 @@ class Config(object):
         return self._config["general_settings"]["bot_token"]
 
     def get_command_prefix(self):
-        return self._config["general_settings"]["command_prefix"]
+        try:
+            return self._config["general_settings"]["command_prefix"]
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_bot_status(self):
         return self._config["general_settings"]["bot_status"]
@@ -68,3 +73,7 @@ class Config(object):
 
     def get_max_parallel_running_count(self):
         return self._config.getint("general_settings", "max_parallel_running_count")
+
+    def on_key_error(self, error):
+        print(f"{error} is not defined. Check the example config.ini here https://github.com/F-He/Discord_Bot_For_LGSM#example-config")
+        exit()
