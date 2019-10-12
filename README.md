@@ -33,6 +33,7 @@ command_prefix = !
 bot_embed_color = #547e34
 
 ; Specify if and how many game servers can run at the same time.
+; If turned off only one server can run at the same time.
 allow_parallel_running = on
 max_parallel_running_count = 200
 
