@@ -63,31 +63,55 @@ class Config(object):
             self.on_key_error(e)
 
     def get_stop_server_cooldown(self):
-        return self._config.getint("command_settings", "stop_server_cooldown")
+        try:
+            return self._config.getint("command_settings", "stop_server_cooldown")
+        except KeyError as e:
+            self.on_key_error(e)
 
     def server_exists(self, server_name):
-        if server_name not in self._config["game_servers"]:
-            return False
-        else:
-            return True
+        try:
+            if server_name not in self._config["game_servers"]:
+                return False
+            else:
+                return True
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_server_file_path(self, server_name):
-        return self._config["game_servers"][server_name]
+        try:
+            return self._config["game_servers"][server_name]
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_all_servers(self):
-        return self._config["game_servers"]
+        try:
+            return self._config["game_servers"]
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_role_for_executing_command(self, command_name):
-        return self._config["command_settings"][command_name]
+        try:
+            return self._config["command_settings"][command_name]
+        except KeyError as e:
+            self.on_key_error(e)
 
     def check_if_server_specified(self, server_name):
-        return self._config.has_option("game_servers", server_name)
+        try:
+            return self._config.has_option("game_servers", server_name)
+        except KeyError as e:
+            self.on_key_error(e)
 
     def is_parallel_running_allowed(self):
-        return self._config.getboolean("general_settings", "allow_parallel_running")
+        try:
+            return self._config.getboolean("general_settings", "allow_parallel_running")
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_max_parallel_running_count(self):
-        return self._config.getint("general_settings", "max_parallel_running_count")
+        try:
+            return self._config.getint("general_settings", "max_parallel_running_count")
+        except KeyError as e:
+            self.on_key_error(e)
 
     def on_key_error(self, error):
         print(f"{error} is not defined. Check the example config.ini here https://github.com/F-He/Discord_Bot_For_LGSM#example-config")
