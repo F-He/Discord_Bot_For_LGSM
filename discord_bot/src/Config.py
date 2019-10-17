@@ -33,19 +33,34 @@ class Config(object):
             self.on_key_error(e)
 
     def get_bot_status(self):
-        return self._config["general_settings"]["bot_status"]
+        try:
+            return self._config["general_settings"]["bot_status"]
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_command_aliases_for(self, command_name: str):
-        return str(self._config["command_aliases"][command_name]).split(",")
+        try:
+            return str(self._config["command_aliases"][command_name]).split(",")
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_bot_embed_color(self):
-        return convert_str_to_hex(self._config["general_settings"]["bot_embed_color"])
+        try:
+            return convert_str_to_hex(self._config["general_settings"]["bot_embed_color"])
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_commands_with_description(self):
-        return self._config._sections["command_descriptions"]
+        try:
+            return self._config._sections["command_descriptions"]
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_start_server_cooldown(self):
-        return self._config.getint("command_settings", "start_server_cooldown")
+        try:
+            return self._config.getint("command_settings", "start_server_cooldown")
+        except KeyError as e:
+            self.on_key_error(e)
 
     def get_stop_server_cooldown(self):
         return self._config.getint("command_settings", "stop_server_cooldown")
